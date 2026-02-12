@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,18 +7,61 @@ import Select from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import { Prayer } from "./prayer";
+import axios from "axios";
+import moment from "moment";
+import "moment/dist/locale/ar";
 
+moment.locale("ar-dz");
 export default function MainContent() {
-  const handleChange = (event) => {
-    console.log(event.target.value);
+  const handleCityChange = (event) => {
+    const cityObject = cities.find((city) => city.value === event.target.value);
+    console.log("the new city is :", event.target.value);
+    setSelectedCity(cityObject);
   };
+
+  const [selectedCity, setSelectedCity] = useState({
+    displayName: "القاهرة",
+    value: "cairo",
+  });
+  const [timings, setTimings] = useState({});
+  const getTiming = async () => {
+    const response = await axios.get(
+      `https://api.aladhan.com/v1/timingsByCity?country=EG&city=${selectedCity.value}`,
+    );
+
+    setTimings(response.data.data.timings);
+  };
+
+  const [today, setToday] = useState("");
+  useEffect(() => {
+    const t = moment();
+    setToday(t.format("MMM Do YYYY | h:mm:ss a"));
+    getTiming();
+  }, [selectedCity]);
+
   const images = [
     "https://i.pinimg.com/236x/af/9a/e3/af9ae302d2740ddeb3169cd747e8ef41.jpg",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnvap8rem6Yx_sTtw_l51J1KSaLmgbxpHE4dENj0MXlw&s",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCfIyMy6iirqEWYo-rIn3zQS5fIDSryqwNAVWOtBw9Hw&s",
   ];
+
   const names = ["الفجر", "الظهر", "العصر", "المغرب", "العشاء"];
-  const times = ["05:00 AM", "12:00 PM", "03:00 PM", "06:00 PM", "08:00 PM"];
+  const times = [
+    timings.Fajr,
+    timings.Dhuhr,
+    timings.Asr,
+    timings.Maghrib,
+    timings.Isha,
+  ];
+
+  const cities = [
+    { displayName: "القاهرة", value: "cairo" },
+    { displayName: "الاسكندرية", value: "alexandria" },
+    { displayName: "سوهاج", value: "sohag" },
+    { displayName: "الاقصر", value: "luxor" },
+    { displayName: "اسيوط", value: "asyut" },
+  ];
+
   return (
     <>
       <Grid
@@ -31,8 +74,8 @@ export default function MainContent() {
       >
         <Grid xs={6}>
           <div>
-            <h3> 12:00 1/1/2023</h3>
-            <h2>القاهرة</h2>
+            <h3>{today}</h3>
+            <h2>{selectedCity.displayName}</h2>
           </div>
         </Grid>
         <Grid xs={6}>
@@ -62,18 +105,21 @@ export default function MainContent() {
       >
         <FormControl style={{ width: "20%" }}>
           <InputLabel id="demo-simple-select-label">
-            <span style={{ color: "white" }}>المدينة </span>
+            <span style={{ color: "white" }}> {selectedCity.displayName} </span>
           </InputLabel>
           <Select
+            // value={cities.value}
+            onChange={(e) => handleCityChange(e)}
+            style={{ color: "white" }}
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            //   value={20}
-            label="Age"
-            onChange={handleChange}
+            label="المدينة"
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {cities.map((city) => (
+              <MenuItem key={city.value} value={city.value}>
+                {city.displayName}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Stack>
