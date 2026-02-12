@@ -7,6 +7,7 @@ import Select from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import { Prayer } from "./prayer";
+import QiblaCompass from "./QiblaCompass";
 import axios from "axios";
 import moment from "moment";
 import "moment/dist/locale/ar";
@@ -194,6 +195,10 @@ export default function MainContent() {
           </Select>
         </FormControl>
       </Stack>
+
+      {/* ── Qibla Direction Section ─────────────────────── */}
+      <Divider style={{ borderColor: "white", opacity: "0.1", marginTop: "50px" }} />
+      <QiblaCompass />
     </>
   );
 }
