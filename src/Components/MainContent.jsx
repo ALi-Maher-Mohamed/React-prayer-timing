@@ -12,11 +12,15 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import EventIcon from "@mui/icons-material/Event";
 import { Prayer } from "./prayer";
 import QiblaCompass from "./QiblaCompass";
 import axios from "axios";
 import moment from "moment";
 import "moment/dist/locale/ar";
+import { Typography } from "@mui/material";
 
 moment.locale("ar-dz");
 
@@ -50,12 +54,6 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
     { key: "Maghrib", displayName: "المغرب" },
     { key: "Isha", displayName: "العشاء" },
   ];
-
-  // const images = [
-  //   "src/assets/bg.jpg",
-  //   "src/assets/bg.jpg",
-  //   "src/assets/bg.jpg",
-  //  ];
 
   const names = ["الفجر", "الظهر", "العصر", "المغرب", "العشاء"];
 
@@ -140,73 +138,129 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
     timings.Isha,
   ];
 
+  // ==========================================
+  // 🎨 Styles مشترك للـ Animation و Effects
+  // ==========================================
+
+  const iconAnimation = `
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotateZ(0deg); }
+      50% { transform: translateY(-10px) rotateZ(5deg); }
+    }
+  `;
+
+  const getPrimaryColor = () => {
+    return theme.palette.mode === "dark" ? "#f0c27f" : "#4b1248";
+  };
+
+  const getSecondaryColor = () => {
+    return theme.palette.mode === "dark" ? "#fc5c7d" : "#7d2f7f";
+  };
+
   return (
     <>
-      {/* Header مع Theme Toggle */}
+      <style>{iconAnimation}</style>
+
+      {/* ========================================
+          🏠 HEADER - Icon منفصل مع Animation
+          ======================================== */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "30px",
+          marginBottom: "40px",
           flexDirection: isMobile ? "column" : "row",
           gap: isMobile ? "20px" : "0",
         }}
       >
+        {/* Logo مع Animation */}
         <Box
-          component="h1"
           sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: isMobile ? "12px" : "16px",
             margin: 0,
-            fontSize: isMobile ? "1.8rem" : "2.5rem",
-            fontWeight: 800,
-            background:
-              theme.palette.mode === "dark"
-                ? "linear-gradient(135deg, #f0c27f 0%, #fc5c7d 100%)"
-                : "linear-gradient(135deg, #4b1248 0%, #7d2f7f 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            letterSpacing: "-0.5px",
-            filter:
-              theme.palette.mode === "dark"
-                ? "drop-shadow(0 0 15px rgba(240, 194, 127, 0.4)) drop-shadow(0 0 30px rgba(252, 92, 125, 0.2))"
-                : "drop-shadow(0 0 12px rgba(75, 18, 72, 0.2)) drop-shadow(0 0 24px rgba(125, 47, 127, 0.1))",
-            textShadow:
-              theme.palette.mode === "dark"
-                ? "0 0 20px rgba(240, 194, 127, 0.3), 0 0 40px rgba(252, 92, 125, 0.2)"
-                : "0 0 15px rgba(75, 18, 72, 0.15), 0 0 30px rgba(125, 47, 127, 0.08)",
-            transition: "all 0.3s ease",
-            cursor: "pointer",
-            "&:hover": {
-              filter:
-                theme.palette.mode === "dark"
-                  ? "drop-shadow(0 0 25px rgba(240, 194, 127, 0.6)) drop-shadow(0 0 50px rgba(252, 92, 125, 0.3))"
-                  : "drop-shadow(0 0 20px rgba(75, 18, 72, 0.3)) drop-shadow(0 0 40px rgba(125, 47, 127, 0.15))",
-            },
           }}
         >
-          🕌 مواقيت الصلاة
+          <Box
+            sx={{
+              fontSize: isMobile ? "2rem" : "2.8rem",
+              animation: "float 3s ease-in-out infinite",
+              transition: "all 0.3s ease",
+              cursor: "pointer",
+              "&:hover": {
+                transform: "scale(1.15) rotateZ(10deg)",
+                filter: `drop-shadow(0 0 15px ${getPrimaryColor()})`,
+              },
+            }}
+          >
+            🕌
+          </Box>
+          <Typography
+            variant="h1"
+            sx={{
+              fontSize: isMobile ? "1.6rem" : "2.4rem",
+              fontWeight: 800,
+              background:
+                theme.palette.mode === "dark"
+                  ? "linear-gradient(135deg, #f0c27f 0%, #fc5c7d 100%)"
+                  : "linear-gradient(135deg, #4b1248 0%, #7d2f7f 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              margin: 0,
+              letterSpacing: "-0.5px",
+              transition: "all 0.3s ease",
+              "&:hover": {
+                transform: "translateY(-2px)",
+              },
+            }}
+          >
+            مواقيت الصلاة
+          </Typography>
         </Box>
+
+        {/* Theme Toggle Button مع تأثيرات */}
         <IconButton
           onClick={toggleTheme}
           color="inherit"
           sx={{
-            padding: "10px",
-            backgroundColor: "rgba(75, 18, 72, 0.1)",
+            padding: "12px",
+            backgroundColor: `${getPrimaryColor()}15`,
+            border: `2px solid ${getPrimaryColor()}30`,
+            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
             "&:hover": {
-              backgroundColor: "rgba(75, 18, 72, 0.2)",
+              backgroundColor: `${getPrimaryColor()}25`,
+              borderColor: `${getPrimaryColor()}50`,
+              transform: "scale(1.1) rotate(20deg)",
+            },
+            "&:active": {
+              transform: "scale(0.95)",
             },
           }}
         >
           {isDarkMode ? (
-            <Brightness7Icon sx={{ fontSize: "1.5rem" }} />
+            <Brightness7Icon
+              sx={{
+                fontSize: "1.5rem",
+                transition: "transform 0.3s ease",
+              }}
+            />
           ) : (
-            <Brightness4Icon sx={{ fontSize: "1.5rem" }} />
+            <Brightness4Icon
+              sx={{
+                fontSize: "1.5rem",
+                transition: "transform 0.3s ease",
+              }}
+            />
           )}
         </IconButton>
       </Box>
 
-      {/* Info Cards */}
+      {/* ========================================
+          📅 INFO CARDS - Icon منفصل مع Hover
+          ======================================== */}
       <Grid
         container
         spacing={isMobile ? 2 : 3}
@@ -214,12 +268,12 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
           marginBottom: "40px",
         }}
       >
-        {/* التاريخ والمدينة */}
+        {/* التاريخ والمدينة - مع Icons منفصلة */}
         <Grid item xs={12} sm={6}>
           <Box
             sx={{
-              padding: isMobile ? "20px" : "24px",
-              borderRadius: "12px",
+              padding: isMobile ? "24px" : "28px",
+              borderRadius: "16px",
               background:
                 theme.palette.mode === "dark"
                   ? "linear-gradient(135deg, #1a1f3a 0%, #232d4a 100%)"
@@ -232,73 +286,197 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
                 theme.palette.mode === "dark"
                   ? "0 4px 15px rgba(240, 194, 127, 0.08)"
                   : "0 4px 15px rgba(75, 18, 72, 0.08)",
+              transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+              cursor: "pointer",
+              "&:hover": {
+                transform: "translateY(-8px)",
+                boxShadow:
+                  theme.palette.mode === "dark"
+                    ? "0 12px 30px rgba(240, 194, 127, 0.15)"
+                    : "0 12px 30px rgba(75, 18, 72, 0.15)",
+                borderColor:
+                  theme.palette.mode === "dark"
+                    ? "rgba(240, 194, 127, 0.3)"
+                    : "rgba(75, 18, 72, 0.2)",
+              },
             }}
           >
-            <p
-              style={{
-                margin: "0 0 10px 0",
-                fontSize: isMobile ? "0.9rem" : "1rem",
-                opacity: 0.7,
+            {/* التاريخ */}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                marginBottom: "20px",
               }}
             >
-              📅 التاريخ
-            </p>
-            <h2 style={{ margin: 0, fontSize: isMobile ? "1.3rem" : "1.6rem" }}>
-              {today}
-            </h2>
-            <p
-              style={{
-                margin: "10px 0 0 0",
-                fontSize: isMobile ? "0.9rem" : "1rem",
-                opacity: 0.7,
-              }}
-            >
-              📍 المدينة
-            </p>
-            <h2
-              style={{
-                margin: "5px 0 0 0",
-                fontSize: isMobile ? "1.3rem" : "1.6rem",
-              }}
-            >
-              {selectedCity.displayName}
-            </h2>
+              <EventIcon
+                sx={{
+                  fontSize: isMobile ? "1.8rem" : "2rem",
+                  color: getPrimaryColor(),
+                  transition: "all 0.3s ease",
+                  animation: "float 3s ease-in-out infinite",
+                  "&:hover": {
+                    transform: "scale(1.2)",
+                  },
+                }}
+              />
+              <Box>
+                <p
+                  style={{
+                    margin: "0 0 6px 0",
+                    fontSize: isMobile ? "0.85rem" : "0.95rem",
+                    opacity: 0.6,
+                    fontWeight: 500,
+                  }}
+                >
+                  التاريخ
+                </p>
+                <h2
+                  style={{
+                    margin: 0,
+                    fontSize: isMobile ? "1.2rem" : "1.5rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  {today}
+                </h2>
+              </Box>
+            </Box>
+
+            {/* الفاصل */}
+            <Divider sx={{ opacity: 0.2, marginBottom: "20px" }} />
+
+            {/* المدينة */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <LocationOnIcon
+                sx={{
+                  fontSize: isMobile ? "1.8rem" : "2rem",
+                  color: getSecondaryColor(),
+                  transition: "all 0.3s ease",
+                  animation: "float 2s ease-in-out infinite",
+                  animationDelay: "0.2s",
+                  "&:hover": {
+                    transform: "scale(1.2) rotateZ(-10deg)",
+                  },
+                }}
+              />
+              <Box>
+                <p
+                  style={{
+                    margin: "0 0 6px 0",
+                    fontSize: isMobile ? "0.85rem" : "0.95rem",
+                    opacity: 0.6,
+                    fontWeight: 500,
+                  }}
+                >
+                  المدينة
+                </p>
+                <h2
+                  style={{
+                    margin: 0,
+                    fontSize: isMobile ? "1.2rem" : "1.5rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  {selectedCity.displayName}
+                </h2>
+              </Box>
+            </Box>
           </Box>
         </Grid>
 
-        {/* الصلاة القادمة والوقت المتبقي */}
+        {/* الصلاة القادمة والوقت المتبقي - مع Icon */}
         <Grid item xs={12} sm={6}>
           <Box
             sx={{
-              padding: isMobile ? "20px" : "24px",
-              borderRadius: "12px",
-              background: "linear-gradient(135deg, #f0c27f 0%, #fc5c7d 100%)",
-              boxShadow: "0 4px 25px rgba(240, 194, 127, 0.3)",
+              padding: isMobile ? "24px" : "28px",
+              borderRadius: "16px",
+              background: `linear-gradient(135deg, ${getPrimaryColor()} 0%, ${getSecondaryColor()} 100%)`,
+              boxShadow: `0 4px 25px ${getPrimaryColor()}40`,
+              transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+              cursor: "pointer",
+              position: "relative",
+              overflow: "hidden",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: `radial-gradient(circle at top right, ${getSecondaryColor()}20, transparent)`,
+                pointerEvents: "none",
+              },
+              "&:hover": {
+                transform: "translateY(-8px) scale(1.02)",
+                boxShadow: `0 15px 40px ${getPrimaryColor()}60`,
+              },
             }}
           >
-            <p
-              style={{
-                margin: "0 0 10px 0",
-                fontSize: isMobile ? "0.9rem" : "1rem",
-                color: "rgba(255, 255, 255, 0.8)",
+            {/* Icon الصلاة القادمة */}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                marginBottom: "16px",
               }}
             >
-              ⏰ الصلاة القادمة
-            </p>
+              <AccessTimeIcon
+                sx={{
+                  fontSize: isMobile ? "1.8rem" : "2rem",
+                  color: "white",
+                  filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.3))",
+                  animation: "pulse 2s ease-in-out infinite",
+                  "@keyframes pulse": {
+                    "0%, 100%": { transform: "scale(1) rotateZ(0deg)" },
+                    "50%": { transform: "scale(1.15) rotateZ(10deg)" },
+                  },
+                }}
+              />
+              <Box>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: isMobile ? "0.9rem" : "1rem",
+                    color: "rgba(255, 255, 255, 0.85)",
+                    fontWeight: 500,
+                  }}
+                >
+                  الصلاة القادمة
+                </p>
+              </Box>
+            </Box>
+
             <h2
               style={{
-                margin: "0 0 15px 0",
-                fontSize: isMobile ? "1.3rem" : "1.6rem",
+                margin: "0 0 20px 0",
+                fontSize: isMobile ? "1.4rem" : "1.8rem",
                 color: "white",
+                fontWeight: 800,
               }}
             >
               {prayersArray[nextPrayerIndex]?.displayName}
             </h2>
+
+            {/* الفاصل */}
+            <Box
+              sx={{
+                height: "2px",
+                background: "rgba(255, 255, 255, 0.2)",
+                borderRadius: "1px",
+                marginBottom: "20px",
+              }}
+            />
+
+            {/* الوقت المتبقي */}
             <p
               style={{
-                margin: "0 0 10px 0",
+                margin: "0 0 12px 0",
                 fontSize: isMobile ? "0.9rem" : "1rem",
-                color: "rgba(255, 255, 255, 0.8)",
+                color: "rgba(255, 255, 255, 0.85)",
+                fontWeight: 500,
               }}
             >
               الوقت المتبقي
@@ -306,10 +484,11 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
             <h2
               style={{
                 margin: 0,
-                fontSize: isMobile ? "2rem" : "2.5rem",
+                fontSize: isMobile ? "2.2rem" : "2.8rem",
                 color: "white",
                 fontWeight: 800,
                 fontFamily: "monospace",
+                letterSpacing: "2px",
               }}
             >
               {remainingTime}
@@ -324,16 +503,39 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
           marginBottom: "40px",
         }}
       />
-      {/* City Selector */}
+
+      {/* ========================================
+          🏙️ CITY SELECTOR - محسّن مع Icon
+          ======================================== */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
           marginBottom: "40px",
+          gap: isMobile ? "12px" : "16px",
+          flexDirection: isMobile ? "column" : "row",
         }}
       >
-        <FormControl sx={{ width: isMobile ? "80%" : "300px" }}>
-          <InputLabel id="city-select-label" sx={{ textAlign: "center" }}>
+        <LocationOnIcon
+          sx={{
+            fontSize: isMobile ? "1.5rem" : "1.8rem",
+            color: getPrimaryColor(),
+            display: isMobile ? "block" : "none",
+            animation: "float 3s ease-in-out infinite",
+          }}
+        />
+        <FormControl sx={{ width: isMobile ? "80%" : "320px" }}>
+          <InputLabel
+            id="city-select-label"
+            sx={{
+              textAlign: "center",
+              fontWeight: 600,
+              "&.Mui-focused": {
+                color: getPrimaryColor(),
+              },
+            }}
+          >
             اختر المدينة
           </InputLabel>
 
@@ -344,6 +546,9 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
             label="المدينة"
             sx={{
               textAlign: "center",
+              borderRadius: "12px",
+              fontWeight: 600,
+              transition: "all 0.3s ease",
               "& .MuiOutlinedInput-notchedOutline": {
                 borderColor:
                   theme.palette.mode === "dark"
@@ -357,15 +562,30 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
                     : "rgba(75, 18, 72, 0.4)",
               },
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor:
-                  theme.palette.mode === "dark" ? "#f0c27f" : "#4b1248",
+                borderColor: getPrimaryColor(),
                 borderWidth: "2px",
+                boxShadow: `0 0 0 3px ${getPrimaryColor()}20`,
               },
             }}
           >
             {cities.map((city) => (
-              <MenuItem key={city.value} value={city.value}>
-                {city.displayName}
+              <MenuItem
+                key={city.value}
+                value={city.value}
+                sx={{
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    backgroundColor: `${getPrimaryColor()}15`,
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: `${getPrimaryColor()}25`,
+                    "&:hover": {
+                      backgroundColor: `${getPrimaryColor()}35`,
+                    },
+                  },
+                }}
+              >
+                📍 {city.displayName}
               </MenuItem>
             ))}
           </Select>
@@ -378,18 +598,44 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
           marginBottom: "40px",
         }}
       />
-      {/* Prayer Times Cards */}
+
+      {/* ========================================
+          🕐 PRAYER TIMES HEADER
+          ======================================== */}
       <Box sx={{ marginBottom: "40px" }}>
-        <h3
-          style={{
-            textAlign: "center",
-            marginBottom: "25px",
-            fontSize: isMobile ? "1.3rem" : "1.5rem",
-            opacity: 0.8,
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "12px",
+            marginBottom: "30px",
+            flexWrap: "wrap",
           }}
         >
-          📍 أوقات الصلوات
-        </h3>
+          <Box
+            sx={{
+              fontSize: isMobile ? "1.8rem" : "2.2rem",
+              animation: "float 3s ease-in-out infinite",
+            }}
+          >
+            🕐
+          </Box>
+          <h3
+            style={{
+              textAlign: "center",
+              margin: 0,
+              fontSize: isMobile ? "1.3rem" : "1.5rem",
+              fontWeight: 700,
+              background: `linear-gradient(135deg, ${getPrimaryColor()}, ${getSecondaryColor()})`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            أوقات الصلوات
+          </h3>
+        </Box>
 
         <Stack
           direction={isMobile ? "column" : isTablet ? "row" : "row"}
@@ -417,7 +663,9 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
         }}
       />
 
-      {/* Qibla Direction */}
+      {/* ========================================
+          🧭 QIBLA DIRECTION
+          ======================================== */}
       <QiblaCompass />
     </>
   );
