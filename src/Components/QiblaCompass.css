@@ -1,4 +1,75 @@
-/* ── Qibla Compass Styles ────────────────────────────── */
+/* ══════════════════════════════════════════════════════════ */
+/* 🧭 QIBLA COMPASS STYLES - ENHANCED                         */
+/* ══════════════════════════════════════════════════════════ */
+
+/* ── GLOBAL ANIMATIONS ──────────────────────────────────── */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotateZ(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateZ(5deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-text {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes arrow-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(240, 194, 127, 0.7));
+  }
+  50% {
+    filter: drop-shadow(0 0 18px rgba(240, 194, 127, 1));
+  }
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* 🧭 QIBLA SECTION - Main Container                        */
+/* ──────────────────────────────────────────────────────── */
 
 .qibla-section {
   margin-top: 50px;
@@ -6,33 +77,75 @@
   flex-direction: column;
   align-items: center;
   padding: 0 20px;
+  animation: fadeIn 0.6s ease-out;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* 📝 HEADER - Title (محسّن)                                */
+/* ──────────────────────────────────────────────────────── */
 
 .qibla-title {
   font-size: 1.6rem;
   font-weight: 700;
+  margin: 0;
   margin-bottom: 8px;
   background: linear-gradient(135deg, #f0c27f, #4b1248);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.5px;
+  transition: all 0.3s ease;
 }
+
+.qibla-title:hover {
+  transform: translateY(-2px);
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* 📍 SUBTITLE - مع Icon (جديد)                             */
+/* ──────────────────────────────────────────────────────── */
 
 .qibla-subtitle {
   font-size: 0.9rem;
-  opacity: 0.6;
-  margin-bottom: 24px;
+  opacity: 0.7;
+  margin: 0;
+  margin-bottom: 28px;
+  font-style: italic;
+  transition: all 0.3s ease;
 }
 
-/* ── Compass Container ─────────────────────────────── */
+.qibla-subtitle:hover {
+  opacity: 0.9;
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* 🧭 COMPASS CONTAINER                                     */
+/* ──────────────────────────────────────────────────────── */
 
 .compass-wrapper {
   position: relative;
   width: 260px;
   height: 260px;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+/* ──────────────────────────────────────────────────────── */
+/* 🎯 COMPASS RING - Main Circle                           */
+/* ──────────────────────────────────────────────────────── */
 
 .compass-ring {
   width: 100%;
@@ -49,8 +162,18 @@
   box-shadow:
     0 0 40px rgba(240, 194, 127, 0.08),
     inset 0 0 60px rgba(0, 0, 0, 0.3);
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.compass-ring:hover {
+  box-shadow:
+    0 0 60px rgba(240, 194, 127, 0.15),
+    inset 0 0 60px rgba(0, 0, 0, 0.3);
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* 🌀 INNER RING - Decorative                              */
+/* ──────────────────────────────────────────────────────── */
 
 .compass-inner-ring {
   position: absolute;
@@ -60,7 +183,16 @@
   height: 70%;
   border-radius: 50%;
   border: 1px solid rgba(240, 194, 127, 0.15);
+  transition: all 0.3s ease;
 }
+
+.compass-ring:hover .compass-inner-ring {
+  border-color: rgba(240, 194, 127, 0.25);
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* 🎯 CENTER DOT - Pulse Effect                            */
+/* ──────────────────────────────────────────────────────── */
 
 .compass-center-dot {
   position: absolute;
@@ -73,9 +205,18 @@
   transform: translate(-50%, -50%);
   z-index: 5;
   box-shadow: 0 0 12px rgba(240, 194, 127, 0.6);
+  transition: all 0.3s ease;
 }
 
-/* ── Cardinal Labels ───────────────────────────────── */
+.compass-ring:hover .compass-center-dot {
+  width: 14px;
+  height: 14px;
+  box-shadow: 0 0 20px rgba(240, 194, 127, 0.9);
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* 🧭 CARDINAL DIRECTIONS - N, S, E, W                    */
+/* ──────────────────────────────────────────────────────── */
 
 .cardinal {
   position: absolute;
@@ -84,6 +225,7 @@
   color: rgba(255, 255, 255, 0.5);
   transform: translate(-50%, -50%);
   user-select: none;
+  transition: all 0.3s ease;
 }
 
 .cardinal.north {
@@ -91,24 +233,36 @@
   left: 50%;
   color: #f0c27f;
   font-size: 1rem;
+  font-weight: 800;
+  animation: float 3s ease-in-out infinite;
+  animation-delay: 0.1s;
 }
 
 .cardinal.south {
   bottom: 2%;
   left: 50%;
+  opacity: 0.4;
 }
 
 .cardinal.east {
   top: 50%;
   left: 92%;
+  opacity: 0.5;
 }
 
 .cardinal.west {
   top: 50%;
   left: 8%;
+  opacity: 0.5;
 }
 
-/* ── Degree Ticks ──────────────────────────────────── */
+.compass-ring:hover .cardinal {
+  opacity: 0.8;
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* 📏 TICK MARKS - Degree Indicators                      */
+/* ──────────────────────────────────────────────────────── */
 
 .tick-marks {
   position: absolute;
@@ -126,6 +280,7 @@
   height: 6%;
   background: rgba(255, 255, 255, 0.15);
   transform-origin: 50% 775%;
+  transition: all 0.3s ease;
 }
 
 .tick.major {
@@ -134,7 +289,17 @@
   background: rgba(240, 194, 127, 0.4);
 }
 
-/* ── Qibla Arrow ───────────────────────────────────── */
+.compass-ring:hover .tick {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.compass-ring:hover .tick.major {
+  background: rgba(240, 194, 127, 0.6);
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* 🎯 QIBLA ARROW - Points to Kaaba                       */
+/* ──────────────────────────────────────────────────────── */
 
 .qibla-arrow {
   position: absolute;
@@ -146,17 +311,7 @@
   z-index: 3;
 }
 
-.arrow-line {
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  width: 3px;
-  height: 40%;
-  background: linear-gradient(to bottom, #f0c27f, transparent);
-  transform: translateX(-50%);
-  border-radius: 2px;
-}
-
+/* Arrow Head - Triangle */
 .arrow-head {
   position: absolute;
   top: 6%;
@@ -169,8 +324,32 @@
   transform: translateX(-50%);
   filter: drop-shadow(0 0 8px rgba(240, 194, 127, 0.7));
   animation: arrow-pulse 2.5s ease-in-out infinite;
+  transition: all 0.3s ease;
 }
 
+.compass-ring:hover .arrow-head {
+  filter: drop-shadow(0 0 15px rgba(240, 194, 127, 1));
+}
+
+/* Arrow Line - Gradient Line */
+.arrow-line {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  width: 3px;
+  height: 40%;
+  background: linear-gradient(to bottom, #f0c27f, transparent);
+  transform: translateX(-50%);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.compass-ring:hover .arrow-line {
+  width: 4px;
+  box-shadow: 0 0 10px rgba(240, 194, 127, 0.5);
+}
+
+/* Kaaba Icon - 🕋 */
 .kaaba-icon {
   position: absolute;
   top: 2%;
@@ -178,23 +357,41 @@
   transform: translateX(-50%);
   font-size: 1.4rem;
   filter: drop-shadow(0 0 6px rgba(240, 194, 127, 0.5));
+  animation: float 2.5s ease-in-out infinite;
+  transition: all 0.3s ease;
 }
 
-@keyframes arrow-pulse {
-  0%,
-  100% {
-    filter: drop-shadow(0 0 8px rgba(240, 194, 127, 0.7));
-  }
-  50% {
-    filter: drop-shadow(0 0 18px rgba(240, 194, 127, 1));
-  }
+.compass-ring:hover .kaaba-icon {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 0 12px rgba(240, 194, 127, 0.9));
 }
 
-/* ── Bearing Info ──────────────────────────────────── */
+/* ──────────────────────────────────────────────────────── */
+/* 📊 BEARING INFO - Degree Display (محسّن)               */
+/* ──────────────────────────────────────────────────────── */
 
 .bearing-info {
-  margin-top: 20px;
   text-align: center;
+  padding: 24px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(240, 194, 127, 0.1) 0%,
+    rgba(252, 92, 125, 0.1) 100%
+  );
+  border: 1px solid rgba(240, 194, 127, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.bearing-info:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(240, 194, 127, 0.15) 0%,
+    rgba(252, 92, 125, 0.15) 100%
+  );
+  border-color: rgba(240, 194, 127, 0.4);
+  box-shadow: 0 4px 15px rgba(240, 194, 127, 0.1);
 }
 
 .bearing-value {
@@ -204,66 +401,153 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  margin: 0 0 8px 0;
+  font-family: "Courier New", monospace;
+  letter-spacing: 1px;
+  animation: pulse-text 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.bearing-info:hover .bearing-value {
+  animation-duration: 1.5s;
 }
 
 .bearing-label {
   font-size: 0.8rem;
   opacity: 0.5;
   margin-top: 2px;
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
-/* ── Error State ───────────────────────────────────── */
+.bearing-info:hover .bearing-label {
+  opacity: 0.7;
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* ⚠️ ERROR STATE                                           */
+/* ──────────────────────────────────────────────────────── */
 
 .qibla-error {
   text-align: center;
   padding: 24px;
   max-width: 340px;
+  margin-bottom: 20px;
+  animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .error-icon {
   font-size: 2.5rem;
   margin-bottom: 12px;
+  animation: bounce 2s ease-in-out infinite;
 }
 
 .error-text {
   font-size: 0.95rem;
   opacity: 0.8;
   line-height: 1.6;
+  transition: all 0.3s ease;
 }
 
-/* ── Loading ───────────────────────────────────────── */
+.qibla-error:hover .error-text {
+  opacity: 1;
+}
+
+/* ──────────────────────────────────────────────────────── */
+/* 🔄 LOADING STATE                                         */
+/* ──────────────────────────────────────────────────────── */
 
 .qibla-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  padding: 20px;
+  animation: fadeIn 0.4s ease-out;
 }
 
 .loading-text {
   font-size: 0.95rem;
   opacity: 0.6;
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
-/* ── Responsive ────────────────────────────────────── */
+.qibla-loading:hover .loading-text {
+  opacity: 0.8;
+}
+
+/* ══════════════════════════════════════════════════════════ */
+/* 📱 RESPONSIVE DESIGN                                       */
+/* ══════════════════════════════════════════════════════════ */
+
+/* ── TABLET (600px - 960px) ────────────────────────────── */
+
+@media (max-width: 960px) {
+  .qibla-section {
+    margin-top: 35px;
+    padding: 0 15px;
+  }
+
+  .compass-wrapper {
+    margin-bottom: 24px;
+  }
+
+  .bearing-info {
+    padding: 20px;
+  }
+
+  .bearing-value {
+    font-size: 1.8rem;
+  }
+}
+
+/* ── MOBILE (600px and below) ──────────────────────────── */
 
 @media (max-width: 600px) {
+  .qibla-section {
+    margin-top: 30px;
+    padding: 0 15px;
+  }
+
+  .qibla-title {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+
+  .qibla-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+  }
+
   .compass-wrapper {
     width: 200px;
     height: 200px;
+    margin-bottom: 20px;
   }
 
   .bearing-value {
     font-size: 1.5rem;
   }
 
-  .qibla-title {
-    font-size: 1.4rem;
+  .bearing-label {
+    font-size: 0.75rem;
   }
 
-  .qibla-section {
-    margin-top: 30px;
-    padding: 0 15px;
+  .bearing-info {
+    padding: 16px;
+    border-radius: 10px;
   }
 
   .arrow-head {
@@ -275,34 +559,73 @@
   .kaaba-icon {
     font-size: 1.2rem;
   }
-}
-
-@media (max-width: 480px) {
-  .compass-wrapper {
-    width: 180px;
-    height: 180px;
-  }
-
-  .bearing-value {
-    font-size: 1.3rem;
-  }
-
-  .qibla-title {
-    font-size: 1.2rem;
-  }
 
   .cardinal.north {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 
   .cardinal {
     font-size: 0.75rem;
   }
 
+  .error-icon {
+    font-size: 2rem;
+  }
+
+  .error-text {
+    font-size: 0.9rem;
+  }
+
+  .loading-text {
+    font-size: 0.9rem;
+  }
+}
+
+/* ── SMALL MOBILE (480px and below) ────────────────────── */
+
+@media (max-width: 480px) {
+  .qibla-section {
+    margin-top: 25px;
+    padding: 0 12px;
+  }
+
+  .qibla-title {
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+  }
+
+  .qibla-subtitle {
+    font-size: 0.8rem;
+    margin-bottom: 16px;
+  }
+
+  .compass-wrapper {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 16px;
+  }
+
+  .bearing-value {
+    font-size: 1.3rem;
+  }
+
+  .bearing-label {
+    font-size: 0.7rem;
+  }
+
+  .bearing-info {
+    padding: 14px;
+    border-radius: 8px;
+  }
+
   .arrow-head {
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     border-bottom: 12px solid #f0c27f;
+  }
+
+  .arrow-line {
+    height: 35%;
   }
 
   .kaaba-icon {
@@ -316,4 +639,60 @@
   .tick.major {
     height: 7%;
   }
+
+  .cardinal.north {
+    font-size: 0.8rem;
+  }
+
+  .cardinal {
+    font-size: 0.7rem;
+  }
+
+  .error-icon {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+
+  .error-text {
+    font-size: 0.85rem;
+  }
+
+  .qibla-error {
+    padding: 16px;
+  }
+
+  .qibla-loading {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .loading-text {
+    font-size: 0.85rem;
+  }
 }
+
+/* ══════════════════════════════════════════════════════════ */
+/* ✨ DARK MODE ENHANCEMENTS                                  */
+/* ══════════════════════════════════════════════════════════ */
+
+@media (prefers-color-scheme: dark) {
+  .bearing-info {
+    background: linear-gradient(
+      135deg,
+      rgba(240, 194, 127, 0.08) 0%,
+      rgba(252, 92, 125, 0.08) 100%
+    );
+  }
+
+  .bearing-info:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(240, 194, 127, 0.12) 0%,
+      rgba(252, 92, 125, 0.12) 100%
+    );
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* END OF QIBLA COMPASS STYLES                                  */
+/* ═══════════════════════════════════════════════════════════ */
