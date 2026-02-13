@@ -153,22 +153,39 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
           gap: isMobile ? "20px" : "0",
         }}
       >
-        <Box>
-          <h1
-            style={{
-              margin: 0,
-              background:
+        <Box
+          component="h1"
+          sx={{
+            margin: 0,
+            fontSize: isMobile ? "1.8rem" : "2.5rem",
+            fontWeight: 800,
+            background:
+              theme.palette.mode === "dark"
+                ? "linear-gradient(135deg, #f0c27f 0%, #fc5c7d 100%)"
+                : "linear-gradient(135deg, #4b1248 0%, #7d2f7f 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            letterSpacing: "-0.5px",
+            filter:
+              theme.palette.mode === "dark"
+                ? "drop-shadow(0 0 15px rgba(240, 194, 127, 0.4)) drop-shadow(0 0 30px rgba(252, 92, 125, 0.2))"
+                : "drop-shadow(0 0 12px rgba(75, 18, 72, 0.2)) drop-shadow(0 0 24px rgba(125, 47, 127, 0.1))",
+            textShadow:
+              theme.palette.mode === "dark"
+                ? "0 0 20px rgba(240, 194, 127, 0.3), 0 0 40px rgba(252, 92, 125, 0.2)"
+                : "0 0 15px rgba(75, 18, 72, 0.15), 0 0 30px rgba(125, 47, 127, 0.08)",
+            transition: "all 0.3s ease",
+            cursor: "pointer",
+            "&:hover": {
+              filter:
                 theme.palette.mode === "dark"
-                  ? "linear-gradient(135deg, #f0c27f, #fc5c7d)"
-                  : "linear-gradient(135deg, #4b1248, #7d2f7f)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              fontSize: isMobile ? "1.8rem" : "2.5rem",
-            }}
-          >
-            🕌 مواقيت الصلاة
-          </h1>
+                  ? "drop-shadow(0 0 25px rgba(240, 194, 127, 0.6)) drop-shadow(0 0 50px rgba(252, 92, 125, 0.3))"
+                  : "drop-shadow(0 0 20px rgba(75, 18, 72, 0.3)) drop-shadow(0 0 40px rgba(125, 47, 127, 0.15))",
+            },
+          }}
+        >
+          🕌 مواقيت الصلاة
         </Box>
         <IconButton
           onClick={toggleTheme}
@@ -307,46 +324,6 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
           marginBottom: "40px",
         }}
       />
-
-      {/* Prayer Times Cards */}
-      <Box sx={{ marginBottom: "40px" }}>
-        <h3
-          style={{
-            textAlign: "center",
-            marginBottom: "25px",
-            fontSize: isMobile ? "1.3rem" : "1.5rem",
-            opacity: 0.8,
-          }}
-        >
-          📍 أوقات الصلوات
-        </h3>
-
-        <Stack
-          direction={isMobile ? "column" : isTablet ? "row" : "row"}
-          spacing={isMobile ? 2 : 1.5}
-          justifyContent="center"
-          flexWrap="wrap"
-          sx={{
-            "& > *": {
-              flex: isMobile ? "1 1 100%" : "1 1 auto",
-            },
-          }}
-        >
-          <Prayer name={names[0]} time={times[0]} />
-          <Prayer name={names[1]} time={times[1]} />
-          <Prayer name={names[2]} time={times[2]} />
-          <Prayer name={names[3]} time={times[3]} />
-          <Prayer name={names[4]} time={times[4]} />
-        </Stack>
-      </Box>
-
-      <Divider
-        sx={{
-          borderColor: "rgba(75, 18, 72, 0.15)",
-          marginBottom: "40px",
-        }}
-      />
-
       {/* City Selector */}
       <Box
         sx={{
@@ -393,6 +370,44 @@ export default function MainContent({ toggleTheme, isDarkMode }) {
             ))}
           </Select>
         </FormControl>
+      </Box>
+
+      <Divider
+        sx={{
+          borderColor: "rgba(75, 18, 72, 0.15)",
+          marginBottom: "40px",
+        }}
+      />
+      {/* Prayer Times Cards */}
+      <Box sx={{ marginBottom: "40px" }}>
+        <h3
+          style={{
+            textAlign: "center",
+            marginBottom: "25px",
+            fontSize: isMobile ? "1.3rem" : "1.5rem",
+            opacity: 0.8,
+          }}
+        >
+          📍 أوقات الصلوات
+        </h3>
+
+        <Stack
+          direction={isMobile ? "column" : isTablet ? "row" : "row"}
+          spacing={isMobile ? 2 : 1.5}
+          justifyContent="center"
+          flexWrap="wrap"
+          sx={{
+            "& > *": {
+              flex: isMobile ? "1 1 100%" : "1 1 auto",
+            },
+          }}
+        >
+          <Prayer name={names[0]} time={times[0]} />
+          <Prayer name={names[1]} time={times[1]} />
+          <Prayer name={names[2]} time={times[2]} />
+          <Prayer name={names[3]} time={times[3]} />
+          <Prayer name={names[4]} time={times[4]} />
+        </Stack>
       </Box>
 
       <Divider
