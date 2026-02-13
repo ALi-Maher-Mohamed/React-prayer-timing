@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
+import myImage from "../assets/bg.jpg";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 export function Prayer({ name, time }) {
@@ -27,7 +28,7 @@ export function Prayer({ name, time }) {
           <CardMedia
             component="img"
             height="160"
-            image="src/assets/bg.jpg"
+            image={myImage}
             alt={name}
             sx={{
               objectFit: "cover",
