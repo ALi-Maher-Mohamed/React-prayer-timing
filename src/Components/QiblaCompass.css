@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 20px;
 }
 
 .qibla-title {
@@ -30,6 +31,7 @@
   position: relative;
   width: 260px;
   height: 260px;
+  margin-bottom: 20px;
 }
 
 .compass-ring {
@@ -245,7 +247,7 @@
 
 /* ── Responsive ────────────────────────────────────── */
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .compass-wrapper {
     width: 200px;
     height: 200px;
@@ -253,5 +255,65 @@
 
   .bearing-value {
     font-size: 1.5rem;
+  }
+
+  .qibla-title {
+    font-size: 1.4rem;
+  }
+
+  .qibla-section {
+    margin-top: 30px;
+    padding: 0 15px;
+  }
+
+  .arrow-head {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 14px solid #f0c27f;
+  }
+
+  .kaaba-icon {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .compass-wrapper {
+    width: 180px;
+    height: 180px;
+  }
+
+  .bearing-value {
+    font-size: 1.3rem;
+  }
+
+  .qibla-title {
+    font-size: 1.2rem;
+  }
+
+  .cardinal.north {
+    font-size: 0.85rem;
+  }
+
+  .cardinal {
+    font-size: 0.75rem;
+  }
+
+  .arrow-head {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid #f0c27f;
+  }
+
+  .kaaba-icon {
+    font-size: 1rem;
+  }
+
+  .tick {
+    height: 5%;
+  }
+
+  .tick.major {
+    height: 7%;
   }
 }

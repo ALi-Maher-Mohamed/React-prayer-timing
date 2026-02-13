@@ -6,6 +6,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Prayer } from "./prayer";
 import QiblaCompass from "./QiblaCompass";
 import axios from "axios";
@@ -14,7 +20,7 @@ import "moment/dist/locale/ar";
 
 moment.locale("ar-dz");
 
-export default function MainContent() {
+export default function MainContent({ toggleTheme, isDarkMode }) {
   const [selectedCity, setSelectedCity] = useState({
     displayName: "القاهرة",
     value: "cairo",
@@ -24,6 +30,10 @@ export default function MainContent() {
   const [nextPrayerIndex, setNextPrayerIndex] = useState(0);
   const [today, setToday] = useState("");
   const [remainingTime, setRemainingTime] = useState("");
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   const cities = [
     { displayName: "القاهرة", value: "Cairo" },
@@ -41,11 +51,11 @@ export default function MainContent() {
     { key: "Isha", displayName: "العشاء" },
   ];
 
-  const images = [
-    "https://i.pinimg.com/236x/af/9a/e3/af9ae302d2740ddeb3169cd747e8ef41.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnvap8rem6Yx_sTtw_l51J1KSaLmgbxpHE4dENj0MXlw&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCfIyMy6iirqEWYo-rIn3zQS5fIDSryqwNAVWOtBw9Hw&s",
-  ];
+  // const images = [
+  //   "src/assets/bg.jpg",
+  //   "src/assets/bg.jpg",
+  //   "src/assets/bg.jpg",
+  //  ];
 
   const names = ["الفجر", "الظهر", "العصر", "المغرب", "العشاء"];
 
@@ -76,7 +86,7 @@ export default function MainContent() {
     const interval = setInterval(() => {
       setupCountDownTimer();
       const t = moment();
-      setToday(t.format("MMM Do YYYY | h:mm:ss a"));
+      setToday(t.format("dddd, MMMM Do YYYY"));
     }, 1000);
 
     return () => clearInterval(interval);
@@ -96,7 +106,7 @@ export default function MainContent() {
       }
 
       if (i === prayersArray.length - 1) {
-        prayerIndex = 0; // بعد العشاء → الفجر
+        prayerIndex = 0;
       }
     }
 
@@ -107,7 +117,6 @@ export default function MainContent() {
       "HH:mm",
     );
 
-    // لو الوقت عدى صلاة العشاء نخلي الفجر اليوم التالي
     if (now.isAfter(nextPrayerTime)) {
       nextPrayerTime.add(1, "day");
     }
@@ -133,59 +142,249 @@ export default function MainContent() {
 
   return (
     <>
-      <Grid
-        container
-        style={{
-          marginBottom: "50px",
+      {/* Header مع Theme Toggle */}
+      <Box
+        sx={{
           display: "flex",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "30px",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? "20px" : "0",
         }}
       >
-        <Grid item xs={6}>
-          <div>
-            <h3>{today}</h3>
-            <h2>{selectedCity.displayName}</h2>
-          </div>
+        <Box>
+          <h1
+            style={{
+              margin: 0,
+              background:
+                theme.palette.mode === "dark"
+                  ? "linear-gradient(135deg, #f0c27f, #fc5c7d)"
+                  : "linear-gradient(135deg, #4b1248, #7d2f7f)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              fontSize: isMobile ? "1.8rem" : "2.5rem",
+            }}
+          >
+            🕌 مواقيت الصلاة
+          </h1>
+        </Box>
+        <IconButton
+          onClick={toggleTheme}
+          color="inherit"
+          sx={{
+            padding: "10px",
+            backgroundColor: "rgba(75, 18, 72, 0.1)",
+            "&:hover": {
+              backgroundColor: "rgba(75, 18, 72, 0.2)",
+            },
+          }}
+        >
+          {isDarkMode ? (
+            <Brightness7Icon sx={{ fontSize: "1.5rem" }} />
+          ) : (
+            <Brightness4Icon sx={{ fontSize: "1.5rem" }} />
+          )}
+        </IconButton>
+      </Box>
+
+      {/* Info Cards */}
+      <Grid
+        container
+        spacing={isMobile ? 2 : 3}
+        sx={{
+          marginBottom: "40px",
+        }}
+      >
+        {/* التاريخ والمدينة */}
+        <Grid item xs={12} sm={6}>
+          <Box
+            sx={{
+              padding: isMobile ? "20px" : "24px",
+              borderRadius: "12px",
+              background:
+                theme.palette.mode === "dark"
+                  ? "linear-gradient(135deg, #1a1f3a 0%, #232d4a 100%)"
+                  : "linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%)",
+              border:
+                theme.palette.mode === "dark"
+                  ? "1px solid rgba(240, 194, 127, 0.1)"
+                  : "1px solid rgba(75, 18, 72, 0.1)",
+              boxShadow:
+                theme.palette.mode === "dark"
+                  ? "0 4px 15px rgba(240, 194, 127, 0.08)"
+                  : "0 4px 15px rgba(75, 18, 72, 0.08)",
+            }}
+          >
+            <p
+              style={{
+                margin: "0 0 10px 0",
+                fontSize: isMobile ? "0.9rem" : "1rem",
+                opacity: 0.7,
+              }}
+            >
+              📅 التاريخ
+            </p>
+            <h2 style={{ margin: 0, fontSize: isMobile ? "1.3rem" : "1.6rem" }}>
+              {today}
+            </h2>
+            <p
+              style={{
+                margin: "10px 0 0 0",
+                fontSize: isMobile ? "0.9rem" : "1rem",
+                opacity: 0.7,
+              }}
+            >
+              📍 المدينة
+            </p>
+            <h2
+              style={{
+                margin: "5px 0 0 0",
+                fontSize: isMobile ? "1.3rem" : "1.6rem",
+              }}
+            >
+              {selectedCity.displayName}
+            </h2>
+          </Box>
         </Grid>
 
-        <Grid item xs={6}>
-          <div>
-            <h3>متبقي حتي صلاة {prayersArray[nextPrayerIndex]?.displayName}</h3>
-            <h2>{remainingTime}</h2>
-          </div>
+        {/* الصلاة القادمة والوقت المتبقي */}
+        <Grid item xs={12} sm={6}>
+          <Box
+            sx={{
+              padding: isMobile ? "20px" : "24px",
+              borderRadius: "12px",
+              background: "linear-gradient(135deg, #f0c27f 0%, #fc5c7d 100%)",
+              boxShadow: "0 4px 25px rgba(240, 194, 127, 0.3)",
+            }}
+          >
+            <p
+              style={{
+                margin: "0 0 10px 0",
+                fontSize: isMobile ? "0.9rem" : "1rem",
+                color: "rgba(255, 255, 255, 0.8)",
+              }}
+            >
+              ⏰ الصلاة القادمة
+            </p>
+            <h2
+              style={{
+                margin: "0 0 15px 0",
+                fontSize: isMobile ? "1.3rem" : "1.6rem",
+                color: "white",
+              }}
+            >
+              {prayersArray[nextPrayerIndex]?.displayName}
+            </h2>
+            <p
+              style={{
+                margin: "0 0 10px 0",
+                fontSize: isMobile ? "0.9rem" : "1rem",
+                color: "rgba(255, 255, 255, 0.8)",
+              }}
+            >
+              الوقت المتبقي
+            </p>
+            <h2
+              style={{
+                margin: 0,
+                fontSize: isMobile ? "2rem" : "2.5rem",
+                color: "white",
+                fontWeight: 800,
+                fontFamily: "monospace",
+              }}
+            >
+              {remainingTime}
+            </h2>
+          </Box>
         </Grid>
       </Grid>
 
-      <Divider style={{ borderColor: "white", opacity: "0.1" }} />
+      <Divider
+        sx={{
+          borderColor: "rgba(75, 18, 72, 0.15)",
+          marginBottom: "40px",
+        }}
+      />
 
-      <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        style={{ marginTop: "50px" }}
-      >
-        <Prayer image={images[0]} name={names[0]} time={times[0]} />
-        <Prayer image={images[1]} name={names[1]} time={times[1]} />
-        <Prayer image={images[2]} name={names[2]} time={times[2]} />
-        <Prayer image={images[0]} name={names[3]} time={times[3]} />
-        <Prayer image={images[1]} name={names[4]} time={times[4]} />
-      </Stack>
+      {/* Prayer Times Cards */}
+      <Box sx={{ marginBottom: "40px" }}>
+        <h3
+          style={{
+            textAlign: "center",
+            marginBottom: "25px",
+            fontSize: isMobile ? "1.3rem" : "1.5rem",
+            opacity: 0.8,
+          }}
+        >
+          📍 أوقات الصلوات
+        </h3>
 
-      <Stack
-        direction={"row"}
-        justifyContent={"center"}
-        style={{ marginTop: "50px" }}
+        <Stack
+          direction={isMobile ? "column" : isTablet ? "row" : "row"}
+          spacing={isMobile ? 2 : 1.5}
+          justifyContent="center"
+          flexWrap="wrap"
+          sx={{
+            "& > *": {
+              flex: isMobile ? "1 1 100%" : "1 1 auto",
+            },
+          }}
+        >
+          <Prayer name={names[0]} time={times[0]} />
+          <Prayer name={names[1]} time={times[1]} />
+          <Prayer name={names[2]} time={times[2]} />
+          <Prayer name={names[3]} time={times[3]} />
+          <Prayer name={names[4]} time={times[4]} />
+        </Stack>
+      </Box>
+
+      <Divider
+        sx={{
+          borderColor: "rgba(75, 18, 72, 0.15)",
+          marginBottom: "40px",
+        }}
+      />
+
+      {/* City Selector */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "40px",
+        }}
       >
-        <FormControl style={{ width: "20%" }}>
-          <InputLabel id="city-select-label">
-            <span style={{ color: "white" }}>{selectedCity.displayName}</span>
+        <FormControl sx={{ width: isMobile ? "80%" : "300px" }}>
+          <InputLabel id="city-select-label" sx={{ textAlign: "center" }}>
+            اختر المدينة
           </InputLabel>
 
           <Select
             value={selectedCity.value}
             onChange={handleCityChange}
-            style={{ color: "white" }}
             labelId="city-select-label"
             label="المدينة"
+            sx={{
+              textAlign: "center",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor:
+                  theme.palette.mode === "dark"
+                    ? "rgba(240, 194, 127, 0.2)"
+                    : "rgba(75, 18, 72, 0.2)",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor:
+                  theme.palette.mode === "dark"
+                    ? "rgba(240, 194, 127, 0.4)"
+                    : "rgba(75, 18, 72, 0.4)",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor:
+                  theme.palette.mode === "dark" ? "#f0c27f" : "#4b1248",
+                borderWidth: "2px",
+              },
+            }}
           >
             {cities.map((city) => (
               <MenuItem key={city.value} value={city.value}>
@@ -194,10 +393,16 @@ export default function MainContent() {
             ))}
           </Select>
         </FormControl>
-      </Stack>
+      </Box>
 
-      {/* ── Qibla Direction Section ─────────────────────── */}
-      <Divider style={{ borderColor: "white", opacity: "0.1", marginTop: "50px" }} />
+      <Divider
+        sx={{
+          borderColor: "rgba(75, 18, 72, 0.15)",
+          marginBottom: "40px",
+        }}
+      />
+
+      {/* Qibla Direction */}
       <QiblaCompass />
     </>
   );
